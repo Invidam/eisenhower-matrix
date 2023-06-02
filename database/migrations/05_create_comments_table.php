@@ -12,8 +12,8 @@ return new class extends Migration {
     {
         Schema::create('comments', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('user_id')->references('id')->on('users');
-            $table->foreignId('item_id')->references('id')->on('items');
+            $table->foreignId('user_id')->references('id')->on('users')->cascadeOnDelete();
+            $table->foreignId('item_id')->references('id')->on('items')->cascadeOnDelete();
 
             $table->string('description');
 

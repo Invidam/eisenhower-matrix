@@ -12,7 +12,7 @@ return new class extends Migration {
     {
         Schema::create('items', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('user_id')->references('id')->on('users');
+            $table->foreignId('user_id')->references('id')->on('users')->cascadeOnDelete();
 
             $table->string('title');
             $table->string('description');
@@ -21,9 +21,6 @@ return new class extends Migration {
             $table->timestamp('deadline');
 
             $table->boolean('is_done');
-
-            $table->integer('important_priority_range')->default(2);
-            $table->integer('important_hour_range')->default(24 * 7);
 
             $table->timestamps();
         });
