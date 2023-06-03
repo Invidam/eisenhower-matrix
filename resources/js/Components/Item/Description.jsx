@@ -7,8 +7,8 @@ export default function Description({ data, setData }) {
             id="outlined-multiline-static"
             label="description"
             multiline
-            rows={3}
-            defaultValue={data.description}
+            rows={2}
+            value={data.description}
             onChange={(e) => setData("description", e.target.value)}
             sx={{ m: 1, width: "65ch" }}
         />

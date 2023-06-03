@@ -4,9 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\Item;
 use Carbon\Carbon;
-use Illuminate\Http\RedirectResponse;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Redirect;
 use Inertia\Inertia;
 use Inertia\Response;
 
@@ -25,28 +24,44 @@ class ItemController extends Controller
      *
      * @throws \Illuminate\Validation\ValidationException
      */
-    public function store(Request $request): RedirectResponse
+    public function store(Request $request)
     {
         $request->validate([
             'title' => 'required|string|max:31',
-            'date' => 'required|date',
+            'deadline' => 'required|date',
             'priority' => 'required|integer|between:1,5',
             'description' => 'required|string|max:255',
         ]);
 
-        $dateString = $request->date;
-        $timestamp = Carbon::parse($dateString)->toDateTimeString();
+        $deadlineString = $request->deadline;
+        $timestamp = Carbon::parse($deadlineString)->toDateTimeString();
         $item = Item::create([
             'title' => $request->title,
             'deadline' => $timestamp,
             'priority' => $request->priority,
             'description' => $request->description,
             'is_done' => false,
-            'user_id' => 1,
+            'user_id' => Auth::id(),
         ]);
 
 //        return redirect(RouteServiceProvider::HOME);
 
-        return Redirect::to('/dashboard');
+//        return Redirect::to('/dashboard');
+    }
+
+    public function index(Request $request)
+    {
+        $userId = Auth::id();
+
+        $sortBy = $request->query('sort_type');
+        $sortDirection = $request->query('sort_direction');
+
+        // Use the query parameters to sort or filter your data
+
+        // Example: Retrieving items with query parameters
+        $items = Item::getSortedItemsForUser($userId, $sortBy, $sortDirection);
+
+        // Return the response
+        return response()->json($items);
     }
 }

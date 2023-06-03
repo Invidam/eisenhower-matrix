@@ -7,8 +7,6 @@ import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
 import Box from "@mui/material/Box";
-import OutlinedInput from "@mui/material/OutlinedInput";
-import TextField from "@mui/material/TextField";
 import { useState } from "react";
 import { useForm } from "@inertiajs/react";
 import Priority from "./Priority";
@@ -19,38 +17,95 @@ import { Stack } from "@mui/material";
 import InputError from "../InputError";
 import PrimaryButton from "../PrimaryButton";
 import { useEffect } from "react";
-function createData(title, date, priority, description) {
-    return { title, date, priority, description };
-}
-
-const rows = [
-    createData("Frozen yoghurt", new Date("2022-06-04"), 3, "my first"),
-    createData("FroIceBearzen ", new Date("2022-06-05"), 1, "my two"),
-    createData("AMape yoghurt", new Date("2022-06-06"), 4, "my three"),
-    createData("Do homework", new Date("2022-06-07"), 2, "my four"),
-];
+import ApiFetch from "@/classes/ApiFetch";
+import SortingButton from "./SortingButton";
 
 export default function TableList() {
-    const [tableList, setTableList] = useState(rows);
+    const [tableList, setTableList] = useState([]);
+    const [deadlineSortDirection, setDeadlineSortDirection] = useState("desc");
+    const [prioritySortDirection, setPrioritySortDirection] = useState("");
+    const [selectedDate, setSelectedDate] = useState(null);
+
+    const toggleSortBtn = (sortType, sortDirection, setSortDirection) => {
+        let newSortDirection;
+        newSortDirection = sortDirection === "asc" ? "desc" : "asc";
+
+        setSortDirection(newSortDirection);
+    };
+
+    const toggleDeadline = () => {
+        setPrioritySortDirection("");
+        toggleSortBtn(
+            "deadline",
+            deadlineSortDirection,
+            setDeadlineSortDirection
+        );
+    };
+
+    const togglePriority = () => {
+        setDeadlineSortDirection("");
+        toggleSortBtn(
+            "priority",
+            prioritySortDirection,
+            setPrioritySortDirection
+        );
+    };
+
+    useEffect(() => {
+        const params =
+            deadlineSortDirection === ""
+                ? {
+                      sort_type: "priority",
+                      sort_direction: prioritySortDirection,
+                  }
+                : {
+                      sort_type: "deadline",
+                      sort_direction: deadlineSortDirection,
+                  };
+        console.log("BEF", params);
+        ApiFetch.get("/items", { params }).then((res) => {
+            setTableList(res.data);
+        });
+    }, [deadlineSortDirection, prioritySortDirection]);
+
     const { data, setData, post, processing, errors, reset } = useForm({
         title: "",
-        date: null,
+        deadline: null,
         priority: null,
         description: "",
     });
 
     const submit = (e) => {
         e.preventDefault();
-        
         post(route("item.create"));
+        if (
+            data.title == null ||
+            data.deadline == null ||
+            data.priority == null ||
+            data.description == null
+        ) {
+        } else {
+            console.log(tableList);
+            console.log("BEF DEAD", data.deadline);
+            data.deadline = data.deadline.getTime() / 1000;
+            console.log("aft DEAD", data.deadline);
 
-        setTableList([...tableList, data]);
-        console.log(tableList);
+            console.log(data.deadline);
+
+            setTableList([...tableList, data]);
+            console.log("LAST", tableList);
+            console.log("LAST", [...tableList, data]);
+        }
+        reset("title", "deadline", "priority", "description");
+        setSelectedDate(null);
     };
 
     return (
         <Stack direction="column" sx={{ alignItems: "center" }}>
-            <TableContainer sx={{ height: 450 }} component={Paper}>
+            <TableContainer
+                sx={{ height: 350, width: "85ch" }}
+                component={Paper}
+            >
                 <Table
                     stickyHeader={true}
                     sx={{ minWidth: 200 }}
@@ -60,8 +115,20 @@ export default function TableList() {
                         <TableRow>
                             <TableCell align="left">Check</TableCell>
                             <TableCell>Title</TableCell>
-                            <TableCell align="right">Date</TableCell>
-                            <TableCell align="right">Priority</TableCell>
+                            <TableCell align="left">
+                                Deadline
+                                <SortingButton
+                                    sortDirection={deadlineSortDirection}
+                                    setSortDirection={toggleDeadline}
+                                ></SortingButton>
+                            </TableCell>
+                            <TableCell align="left">
+                                Priority
+                                <SortingButton
+                                    sortDirection={prioritySortDirection}
+                                    setSortDirection={togglePriority}
+                                ></SortingButton>
+                            </TableCell>
                         </TableRow>
                     </TableHead>
 
@@ -80,14 +147,14 @@ export default function TableList() {
                                     {row.title}
                                 </TableCell>
                                 <TableCell
-                                    align="right"
+                                    align="left"
                                     component="th"
                                     scope="row"
                                 >
-                                    {row.date.toDateString()}
+                                    {formatTimestamp(row.deadline)}
                                 </TableCell>
                                 <TableCell
-                                    align="right"
+                                    align="left"
                                     component="th"
                                     scope="row"
                                 >
@@ -110,17 +177,36 @@ export default function TableList() {
                 }}
             >
                 <form onSubmit={submit}>
-                    <Stack direction="row">
-                        <Title data={data} setData={setData} />
-
-                        <InputError message={errors.name} className="mt-2" />
-                        <Priority data={data} setData={setData} />
-
-                        <InputError message={errors.name} className="mt-2" />
-                        <DatePick data={data} setData={setData} />
+                    <Stack direction="row" sx={{ height: "12ch" }}>
+                        <Stack direction="column">
+                            <Title data={data} setData={setData} />
+                            <InputError
+                                message={errors.title}
+                                className="mt-0"
+                            />
+                        </Stack>
+                        <Stack direction="column">
+                            <Priority data={data} setData={setData} />
+                            <InputError
+                                message={errors.priority}
+                                className="mt-0"
+                            />
+                        </Stack>
+                        <Stack direction="column">
+                            <DatePick
+                                data={data}
+                                setData={setData}
+                                selectedDate={selectedDate}
+                                setSelectedDate={setSelectedDate}
+                            />
+                            <InputError
+                                message={errors.deadline}
+                                className="mt-0"
+                            />
+                        </Stack>
                     </Stack>
                     <Description data={data} setData={setData} />
-                    <InputError message={errors.description} className="mt-2" />
+                    <InputError message={errors.description} className="mt-0" />
 
                     <div className="flex mt-4">
                         <PrimaryButton className="ml-4" disabled={processing}>
@@ -131,4 +217,12 @@ export default function TableList() {
             </Box>
         </Stack>
     );
+}
+function formatTimestamp(db_time) {
+    const date = new Date(db_time * 1000);
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, "0");
+    const day = String(date.getDate()).padStart(2, "0");
+    const formattedDate = `${year}/${month}/${day}`;
+    return formattedDate;
 }
