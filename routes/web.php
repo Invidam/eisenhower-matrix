@@ -30,14 +30,29 @@ Route::get('/dashboard', function () {
     return Inertia::render('Dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
 
+
+Route::get('/list', function () {
+    return Inertia::render('TodoList');
+})->middleware(['auth', 'verified'])->name('list');
+
+Route::get('/matrix', function () {
+    return Inertia::render('TodoMatrix');
+})->middleware(['auth', 'verified'])->name('matrix');
+
+
+
 Route::middleware('auth')->group(function () {
+//    Route::get('/list', function () {
+//        return Inertia::render('TodoList');
+//    });
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
     Route::get('/items', [ItemController::class, 'index'])->name('item.index');
     Route::post('/items', [ItemController::class, 'store'])->name('item.create');
+    Route::patch('/items/{item_id}/done', [ItemController::class, 'toggleDoneStatus'])->name('item.update.done');
 
 });
 
-require __DIR__.'/auth.php';
+require __DIR__ . '/auth.php';

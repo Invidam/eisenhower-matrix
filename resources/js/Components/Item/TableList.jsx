@@ -19,6 +19,7 @@ import PrimaryButton from "../PrimaryButton";
 import { useEffect } from "react";
 import ApiFetch from "@/classes/ApiFetch";
 import SortingButton from "./SortingButton";
+import Item from "./Item";
 
 export default function TableList() {
     const [tableList, setTableList] = useState([]);
@@ -133,34 +134,8 @@ export default function TableList() {
                     </TableHead>
 
                     <TableBody>
-                        {tableList.map((row, idx) => (
-                            <TableRow
-                                key={idx}
-                                sx={{
-                                    "&:last-child td, &:last-child th": {
-                                        border: 0,
-                                    },
-                                }}
-                            >
-                                <TableCell>V</TableCell>
-                                <TableCell component="th" scope="row">
-                                    {row.title}
-                                </TableCell>
-                                <TableCell
-                                    align="left"
-                                    component="th"
-                                    scope="row"
-                                >
-                                    {formatTimestamp(row.deadline)}
-                                </TableCell>
-                                <TableCell
-                                    align="left"
-                                    component="th"
-                                    scope="row"
-                                >
-                                    {row.priority}
-                                </TableCell>
-                            </TableRow>
+                        {tableList.map((row) => (
+                            <Item data={row} key={row.id} />
                         ))}
                     </TableBody>
                 </Table>
@@ -217,12 +192,4 @@ export default function TableList() {
             </Box>
         </Stack>
     );
-}
-function formatTimestamp(db_time) {
-    const date = new Date(db_time * 1000);
-    const year = date.getFullYear();
-    const month = String(date.getMonth() + 1).padStart(2, "0");
-    const day = String(date.getDate()).padStart(2, "0");
-    const formattedDate = `${year}/${month}/${day}`;
-    return formattedDate;
 }

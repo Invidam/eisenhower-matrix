@@ -3,7 +3,9 @@
 @tailwind utilities;
 
 .dashboard {
-    flex-direction: row;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 .sidebar {
     height: calc(100vh - 140px);
@@ -34,4 +36,10 @@
 .item-list__item {
     display: inline-block;
     width: 500px;
+}
+
+.tab-icon {
+    /* padding: 10px; */
+    /* weight: 20px; */
+    /* margin: 20px; */
 }

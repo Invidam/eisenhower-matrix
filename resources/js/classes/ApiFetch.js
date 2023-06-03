@@ -20,6 +20,10 @@ class ApiFetch {
         return this.instance.put(url, data);
     }
 
+    patch(url) {
+        return this.instance.patch(url);
+    }
+
     delete(url) {
         return this.instance.delete(url);
     }

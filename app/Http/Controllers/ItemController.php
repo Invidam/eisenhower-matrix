@@ -64,4 +64,9 @@ class ItemController extends Controller
         // Return the response
         return response()->json($items);
     }
+    public function toggleDoneStatus(Request $request, $item_id)
+    {
+        Item::toggleDoneStatus($item_id);
+    }
+
 }
