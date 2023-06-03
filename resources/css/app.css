@@ -43,3 +43,39 @@
     /* weight: 20px; */
     /* margin: 20px; */
 }
+
+.matrix-do {
+    background-color: #2ecc71 !important;
+}
+
+.matrix-schedule {
+    background-color: #f39c12 !important;
+}
+
+.matrix-delegate {
+    background-color: #3498db !important;
+}
+
+.matrix-delete {
+    background-color: #e74c3c !important;
+}
+
+.matrix-block {
+    font-size: 32px;
+}
+.matrix-block-vertical {
+    transform: rotate(180deg);
+    writing-mode: vertical-rl;
+}
+.matrix-box {
+    display: flex;
+    font-weight: bold;
+    align-items: center;
+    justify-content: center;
+}
+.matrix-box-vertical {
+    justify-content: flex-end;
+    /* display: flex;
+    align-items: center;
+    justify-content: center; */
+}

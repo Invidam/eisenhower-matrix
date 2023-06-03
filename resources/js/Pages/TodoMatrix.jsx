@@ -1,9 +1,18 @@
 import TableList from "@/Components/Item/TableList";
+import MatrixItem from "@/Components/Matrix/MatrixItem";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 import { Head } from "@inertiajs/react";
-import { Stack } from "@mui/material";
+import { Grid, Card, CardContent, Typography, Stack, Box } from "@mui/material";
+import Container from "@mui/material/Container";
 
 export default function TodoMatrix({ auth }) {
+    const data = [
+        { id: 1, title: "Do", content: "Do it now" },
+        { id: 2, title: "Schedule", content: "a time to do it" },
+        { id: 3, title: "Delegate", content: "it to someone else" },
+        { id: 4, title: "Delete", content: "Eliminate It" },
+    ];
+
     return (
         <AuthenticatedLayout
             user={auth.user}
@@ -14,17 +23,135 @@ export default function TodoMatrix({ auth }) {
             }
         >
             <Head title="Matrix" />
-            <Stack direction="column" className="dashboard">
-                <div className="py-12 content">
-                    <TableList />
-                    {/* <div className="max-w-7xl mx-auto sm:px-6 lg:px-8">
-                        <div className="bg-white overflow-hidden shadow-sm sm:rounded-lg">
-                            <div className="p-6 text-gray-900">
-                                You're logged in!
-                            </div>
-                        </div> 
-                    </div>*/}
-                </div>
+            <Stack direction="column" sx={{ padding: "3ch" }}>
+                <Grid container spacing={5} justifyContent="flex-start">
+                    <Box
+                        sx={{
+                            m: 1,
+                            width: "10vw",
+                            height: "6vh",
+
+                            padding: "0px",
+                        }}
+                    ></Box>
+                    <Box
+                        sx={{
+                            m: 1,
+                            width: "40vw",
+                            height: "6vh",
+
+                            padding: "0px",
+                        }}
+                        className="matrix-box"
+                    >
+                        <text className="matrix-block matrix-block">
+                            Urgent
+                        </text>
+                    </Box>
+                    <Box
+                        sx={{
+                            m: 1,
+                            width: "40vw",
+                            height: "6vh",
+
+                            padding: "0px",
+                        }}
+                        className="matrix-box"
+                    >
+                        <text className="matrix-block matrix-block">
+                            Important
+                        </text>
+                    </Box>
+                    <Box
+                        sx={{
+                            m: 1,
+                            width: "10vw",
+                            height: "37.5vh",
+
+                            padding: "0px",
+                        }}
+                        className="matrix-box matrix-box-vertical"
+                    >
+                        <text className="matrix-block matrix-block-vertical">
+                            Important
+                        </text>
+                    </Box>
+                    <Box
+                        sx={{
+                            m: 1,
+                            width: "40vw",
+                            height: "37.5vh",
+
+                            padding: "0px",
+                        }}
+                    >
+                        <MatrixItem
+                            key={data[0].id}
+                            item={data[0]}
+                            title={"do"}
+                        />
+                    </Box>
+                    <Box
+                        sx={{
+                            m: 1,
+                            width: "40vw",
+                            height: "32vh",
+                            padding: "0px",
+                        }}
+                    >
+                        <MatrixItem
+                            key={data[1].id}
+                            item={data[1]}
+                            title={"schedule"}
+                        />
+                    </Box>
+                    <Box
+                        sx={{
+                            m: 1,
+                            width: "10vw",
+                            height: "32vh",
+
+                            padding: "0px",
+                        }}
+                        className="matrix-box matrix-box-vertical"
+                    >
+                        <text className="matrix-block matrix-block-vertical">
+                            Not Important
+                        </text>
+                    </Box>
+                    <Box
+                        sx={{
+                            m: 1,
+                            width: "40vw",
+                            height: "32vh",
+
+                            padding: "0px",
+                            marginTop: "15px",
+                        }}
+                    >
+                        <MatrixItem
+                            key={data[2].id}
+                            item={data[2]}
+                            title={"delegate"}
+                        />
+                    </Box>
+                    <Box
+                        sx={{
+                            m: 1,
+                            width: "40vw",
+                            height: "32vh",
+
+                            padding: "0px",
+                            marginTop: "15px",
+                        }}
+                    >
+                        <MatrixItem
+                            key={data[3].id}
+                            item={data[3]}
+                            title={"delete"}
+                        />
+                    </Box>
+                </Grid>
             </Stack>
         </AuthenticatedLayout>
     );
