@@ -26,6 +26,7 @@ export default function TableList() {
     const [deadlineSortDirection, setDeadlineSortDirection] = useState("desc");
     const [prioritySortDirection, setPrioritySortDirection] = useState("");
     const [selectedDate, setSelectedDate] = useState(null);
+    const [checkRefresh, setCheckRefresh] = useState(0);
 
     const toggleSortBtn = (sortType, sortDirection, setSortDirection) => {
         let newSortDirection;
@@ -33,7 +34,7 @@ export default function TableList() {
 
         setSortDirection(newSortDirection);
     };
-
+    const makeRefresh = () => setCheckRefresh(checkRefresh + 1);
     const toggleDeadline = () => {
         setPrioritySortDirection("");
         toggleSortBtn(
@@ -66,8 +67,9 @@ export default function TableList() {
         console.log("BEF", params);
         ApiFetch.get("/items", { params }).then((res) => {
             setTableList(res.data);
+            console.log("AFT", res.data);
         });
-    }, [deadlineSortDirection, prioritySortDirection]);
+    }, [deadlineSortDirection, prioritySortDirection, checkRefresh]);
 
     const { data, setData, post, processing, errors, reset } = useForm({
         title: "",
@@ -86,16 +88,9 @@ export default function TableList() {
             data.description == null
         ) {
         } else {
-            console.log(tableList);
-            console.log("BEF DEAD", data.deadline);
             data.deadline = data.deadline.getTime() / 1000;
-            console.log("aft DEAD", data.deadline);
-
-            console.log(data.deadline);
 
             setTableList([...tableList, data]);
-            console.log("LAST", tableList);
-            console.log("LAST", [...tableList, data]);
         }
         reset("title", "deadline", "priority", "description");
         setSelectedDate(null);
@@ -135,7 +130,11 @@ export default function TableList() {
 
                     <TableBody>
                         {tableList.map((row) => (
-                            <Item data={row} key={row.id} />
+                            <Item
+                                data={row}
+                                key={row.id}
+                                makeRefresh={makeRefresh}
+                            />
                         ))}
                     </TableBody>
                 </Table>

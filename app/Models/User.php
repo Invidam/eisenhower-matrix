@@ -21,6 +21,8 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'important_hour_range',
+        'important_priority_range'
     ];
 
     /**

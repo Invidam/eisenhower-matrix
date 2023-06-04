@@ -9,7 +9,11 @@ export default function Description({ data, setData }) {
             multiline
             rows={2}
             value={data.description}
-            onChange={(e) => setData("description", e.target.value)}
+            onChange={(e) => {
+                setData("description", e.target.value);
+                console.log("dddddddddddddddddATA: ", data);
+                console.log("VvvvvvvvvvvvvAL: ", e.target.value);
+            }}
             sx={{ m: 1, width: "65ch" }}
         />
     );

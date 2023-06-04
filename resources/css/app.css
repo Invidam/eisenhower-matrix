@@ -2,6 +2,9 @@
 @tailwind components;
 @tailwind utilities;
 
+* {
+    /* font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif; */
+}
 .dashboard {
     display: flex;
     flex-direction: column;
@@ -44,18 +47,26 @@
     /* margin: 20px; */
 }
 
+.matrix-title {
+    font-weight: bold !important;
+}
+
+.matrix-title-do,
 .matrix-do {
     background-color: #2ecc71 !important;
 }
 
+.matrix-title-schedule,
 .matrix-schedule {
     background-color: #f39c12 !important;
 }
 
+.matrix-title-delegate,
 .matrix-delegate {
     background-color: #3498db !important;
 }
 
+.matrix-title-delete,
 .matrix-delete {
     background-color: #e74c3c !important;
 }
@@ -78,4 +89,36 @@
     /* display: flex;
     align-items: center;
     justify-content: center; */
+}
+.matrix-content {
+    overflow: "hidden";
+    border: 1px solid black;
+}
+.matrix-content-do {
+    background-color: rgba(46, 204, 113, 0.6) !important;
+}
+
+.matrix-content-schedule {
+    background-color: rgba(243, 156, 18, 0.6) !important;
+}
+
+.matrix-content-delegate {
+    background-color: rgba(52, 152, 219, 0.6) !important;
+}
+
+.matrix-content-delete {
+    background-color: rgba(231, 76, 60, 0.6) !important;
+}
+
+.table-parent {
+    overflow: auto;
+}
+
+.table-parent::-webkit-scrollbar {
+    width: 1em;
+    background-color: transparent;
+}
+
+.table-parent::-webkit-scrollbar-thumb {
+    background-color: rgba(255, 255, 255, 0.156);
 }

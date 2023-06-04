@@ -1,7 +1,8 @@
 import * as React from "react";
 import { Grid, Card, CardContent, Typography, Box } from "@mui/material";
+import ItemList from "./ItemList";
 
-export default function MatrixItem({ item, title }) {
+export default function MatrixItem({ item, title, list }) {
     return (
         <Box key={item.id} item xs={2} sm={6} md={3} lg={12}>
             <Card className={"matrix-" + title}>
@@ -13,6 +14,7 @@ export default function MatrixItem({ item, title }) {
                         {item.content}
                     </Typography>
                     <Typography
+                        className={"matrix-title matrix-" + title}
                         sx={{
                             display: "block",
                             height: "250px",
@@ -20,7 +22,7 @@ export default function MatrixItem({ item, title }) {
                             margin: "3px 5px 0px 0px",
                         }}
                     >
-                        content
+                        <ItemList tableList={list} title={title} />
                     </Typography>
                 </CardContent>
             </Card>

@@ -22,7 +22,7 @@ class Item extends Model
         'deadline'
     ];
 
-    public static function getSortedItemsForUser($userId, $sortBy, $sortDirection = "asc")
+    public static function getSortedItemsForUser($userId, $sortBy = "deadline", $sortDirection = "asc")
     {
         $query = self::where('user_id', $userId)
             ->where('is_done', false)

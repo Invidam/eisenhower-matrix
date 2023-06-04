@@ -43,10 +43,36 @@ class ItemController extends Controller
             'is_done' => false,
             'user_id' => Auth::id(),
         ]);
+    }
 
-//        return redirect(RouteServiceProvider::HOME);
+    public function update(Request $request)
+    {
+        $request->validate([
+            'id' => 'required|integer',
+            'title' => 'required|string|max:31',
+//            'deadline' => 'required|date',
+            'priority' => 'required|integer|between:1,5',
+            'description' => 'required|string|max:255',
+        ]);
+        $item = Item::findOrFail($request->id);
+        $deadlineString = $request->deadline;
+        $timestamp = Carbon::parse($deadlineString)->toDateTimeString();
 
-//        return Redirect::to('/dashboard');
+        $item->title = $request->title;
+        $item->deadline = Carbon::parse($request->deadline)->toDateTimeString();
+        $item->priority = $request->priority;
+        $item->description = $request->description;
+
+        $item->save();
+
+
+//        $item->title = $request->
+//        $item->update([
+//            'title' => $request->title,
+//            'deadline' => $timestamp,
+//            'priority' => $request->priority,
+//            'description' => $request->description,
+//        ]);
     }
 
     public function index(Request $request)
@@ -64,6 +90,7 @@ class ItemController extends Controller
         // Return the response
         return response()->json($items);
     }
+
     public function toggleDoneStatus(Request $request, $item_id)
     {
         Item::toggleDoneStatus($item_id);

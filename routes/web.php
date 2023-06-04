@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ItemController;
+use App\Http\Controllers\SettingController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -49,8 +50,14 @@ Route::middleware('auth')->group(function () {
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
+
+    Route::get('/setting', [SettingController::class, 'edit'])->name('setting.edit');
+    Route::patch('/setting', [SettingController::class, 'update'])->name('setting.update');
+
     Route::get('/items', [ItemController::class, 'index'])->name('item.index');
     Route::post('/items', [ItemController::class, 'store'])->name('item.create');
+    Route::patch('/items', [ItemController::class, 'update'])->name('item.edit');
+
     Route::patch('/items/{item_id}/done', [ItemController::class, 'toggleDoneStatus'])->name('item.update.done');
 
 });

@@ -1,17 +1,90 @@
 import TableList from "@/Components/Item/TableList";
 import MatrixItem from "@/Components/Matrix/MatrixItem";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
-import { Head } from "@inertiajs/react";
+import ApiFetch from "@/classes/ApiFetch";
+import { Head, usePage } from "@inertiajs/react";
 import { Grid, Card, CardContent, Typography, Stack, Box } from "@mui/material";
 import Container from "@mui/material/Container";
+import { useEffect, useState } from "react";
+
+const data = [
+    { id: 1, title: "Do", content: "Do it now" },
+    { id: 2, title: "Schedule", content: "a time to do it" },
+    { id: 3, title: "Delegate", content: "it to someone else" },
+    { id: 4, title: "Delete", content: "Eliminate It" },
+];
 
 export default function TodoMatrix({ auth }) {
-    const data = [
-        { id: 1, title: "Do", content: "Do it now" },
-        { id: 2, title: "Schedule", content: "a time to do it" },
-        { id: 3, title: "Delegate", content: "it to someone else" },
-        { id: 4, title: "Delete", content: "Eliminate It" },
-    ];
+    const [doList, setDoList] = useState([]);
+    const [scheduleList, setScheduleList] = useState([]);
+    const [delegateList, setDelegateList] = useState([]);
+    const [deleteList, setDeleteList] = useState([]);
+
+    const user = usePage().props.auth.user;
+
+    const item = {
+        id: null,
+        is_done: null,
+        title: null,
+        deadline: null,
+        priority: null,
+        description: null,
+    };
+    const getMatrixType = (item) => {
+        const isUrgent =
+            new Date(item.deadline * 1000) - new Date() <
+            user.important_hour_range * 60 * 60 * 1000;
+
+        const isImportant = item.priority <= user.important_priority_range;
+
+        if (isUrgent && isImportant) {
+            return "Do";
+        } else if (isUrgent && !isImportant) {
+            return "Delegate";
+        } else if (!isUrgent && isImportant) {
+            return "Schedule";
+        } else {
+            return "Delete";
+        }
+    };
+    const updateMatrix = (itemList) => {
+        setDoList([]);
+        setScheduleList([]);
+        setDelegateList([]);
+        setDeleteList([]);
+
+        itemList.forEach((item) => {
+            switch (getMatrixType(item)) {
+                case "Do":
+                    setDoList((doList) => [...doList, item]);
+                    break;
+                case "Schedule":
+                    setScheduleList((scheduleList) => [...scheduleList, item]);
+                    break;
+                case "Delegate":
+                    setDelegateList((delegateList) => [...delegateList, item]);
+                    break;
+                case "Delete":
+                    setDeleteList((deleteList) => [...deleteList, item]);
+                    break;
+            }
+        });
+
+        console.log("doList: ", doList);
+        console.log("scheduleList: ", scheduleList);
+        console.log("delegateList: ", delegateList);
+        console.log("deleteList: ", deleteList);
+    };
+
+    useEffect(() => {
+        const params = {
+            sort_type: "deadline",
+            sort_direction: "asc",
+        };
+        ApiFetch.get("/items", { params }).then((res) => {
+            updateMatrix(res.data);
+        });
+    }, []);
 
     return (
         <AuthenticatedLayout
@@ -44,9 +117,7 @@ export default function TodoMatrix({ auth }) {
                         }}
                         className="matrix-box"
                     >
-                        <text className="matrix-block matrix-block">
-                            Urgent
-                        </text>
+                        <p className="matrix-block matrix-block">Urgent</p>
                     </Box>
                     <Box
                         sx={{
@@ -58,9 +129,7 @@ export default function TodoMatrix({ auth }) {
                         }}
                         className="matrix-box"
                     >
-                        <text className="matrix-block matrix-block">
-                            Important
-                        </text>
+                        <p className="matrix-block matrix-block">Not Urgent</p>
                     </Box>
                     <Box
                         sx={{
@@ -72,9 +141,9 @@ export default function TodoMatrix({ auth }) {
                         }}
                         className="matrix-box matrix-box-vertical"
                     >
-                        <text className="matrix-block matrix-block-vertical">
+                        <p className="matrix-block matrix-block-vertical">
                             Important
-                        </text>
+                        </p>
                     </Box>
                     <Box
                         sx={{
@@ -89,6 +158,7 @@ export default function TodoMatrix({ auth }) {
                             key={data[0].id}
                             item={data[0]}
                             title={"do"}
+                            list={doList}
                         />
                     </Box>
                     <Box
@@ -103,6 +173,7 @@ export default function TodoMatrix({ auth }) {
                             key={data[1].id}
                             item={data[1]}
                             title={"schedule"}
+                            list={scheduleList}
                         />
                     </Box>
                     <Box
@@ -115,9 +186,9 @@ export default function TodoMatrix({ auth }) {
                         }}
                         className="matrix-box matrix-box-vertical"
                     >
-                        <text className="matrix-block matrix-block-vertical">
+                        <p className="matrix-block matrix-block-vertical">
                             Not Important
-                        </text>
+                        </p>
                     </Box>
                     <Box
                         sx={{
@@ -133,6 +204,7 @@ export default function TodoMatrix({ auth }) {
                             key={data[2].id}
                             item={data[2]}
                             title={"delegate"}
+                            list={delegateList}
                         />
                     </Box>
                     <Box
@@ -149,6 +221,7 @@ export default function TodoMatrix({ auth }) {
                             key={data[3].id}
                             item={data[3]}
                             title={"delete"}
+                            list={deleteList}
                         />
                     </Box>
                 </Grid>
