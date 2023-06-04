@@ -34,9 +34,9 @@ export default function TodoMatrix({ auth }) {
         const isUrgent =
             new Date(item.deadline * 1000) - new Date() <
             user.important_hour_range * 60 * 60 * 1000;
-
+        console.log("PRI", item.priority, user.important_priority_range);
         const isImportant = item.priority <= user.important_priority_range;
-
+        if (item.title === "치과") console.log(item, isUrgent, isImportant);
         if (isUrgent && isImportant) {
             return "Do";
         } else if (isUrgent && !isImportant) {
@@ -76,6 +76,9 @@ export default function TodoMatrix({ auth }) {
         console.log("deleteList: ", deleteList);
     };
 
+    const [checkRefresh, setCheckRefresh] = useState(0);
+
+    const makeRefresh = () => setCheckRefresh(checkRefresh + 1);
     useEffect(() => {
         const params = {
             sort_type: "deadline",
@@ -84,7 +87,7 @@ export default function TodoMatrix({ auth }) {
         ApiFetch.get("/items", { params }).then((res) => {
             updateMatrix(res.data);
         });
-    }, []);
+    }, [checkRefresh]);
 
     return (
         <AuthenticatedLayout
@@ -155,6 +158,7 @@ export default function TodoMatrix({ auth }) {
                         }}
                     >
                         <MatrixItem
+                            setCheckRefresh={makeRefresh}
                             key={data[0].id}
                             item={data[0]}
                             title={"do"}
@@ -170,6 +174,7 @@ export default function TodoMatrix({ auth }) {
                         }}
                     >
                         <MatrixItem
+                            setCheckRefresh={makeRefresh}
                             key={data[1].id}
                             item={data[1]}
                             title={"schedule"}
@@ -201,6 +206,7 @@ export default function TodoMatrix({ auth }) {
                         }}
                     >
                         <MatrixItem
+                            setCheckRefresh={makeRefresh}
                             key={data[2].id}
                             item={data[2]}
                             title={"delegate"}
@@ -218,6 +224,7 @@ export default function TodoMatrix({ auth }) {
                         }}
                     >
                         <MatrixItem
+                            setCheckRefresh={makeRefresh}
                             key={data[3].id}
                             item={data[3]}
                             title={"delete"}

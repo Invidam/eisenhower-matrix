@@ -3,12 +3,32 @@ import TableCell from "@mui/material/TableCell";
 import TableRow from "@mui/material/TableRow";
 import Checkbox from "@mui/material/Checkbox";
 import { useState } from "react";
-import { Button } from "@mui/material";
+import { Button, Box } from "@mui/material";
 import ApiFetch from "@/classes/ApiFetch";
 import { useEffect } from "react";
+import Typography from "@mui/material/Typography";
+import Modal from "@mui/material/Modal";
+import InputTodo from "../Item/InputTodo";
 
-export default function MatrixTodo({ data }) {
+const style = {
+    position: "absolute",
+    top: "50%",
+    left: "50%",
+    transform: "translate(-50%, -50%)",
+    width: 800,
+    bgcolor: "background.paper",
+    border: "2px solid #000",
+    boxShadow: 24,
+    p: 4,
+};
+
+export default function MatrixTodo({ setCheckRefresh, data }) {
+    const [open, setOpen] = React.useState(false);
+    const handleOpen = () => setOpen(true);
+    const handleClose = () => setOpen(false);
+
     const [checkStatus, setCheckStatus] = useState(false);
+
     const textStyle = {
         fontSize: "16px",
         fontWeight: "500",
@@ -35,11 +55,45 @@ export default function MatrixTodo({ data }) {
             }}
         >
             <TableCell style={textStyle}>
-                {console.log(`${data.id}'s status: ${checkStatus}`)}
-                <Checkbox checked={checkStatus} onChange={toggleTodoItem} />
+                <Checkbox
+                    checked={checkStatus || false}
+                    onChange={toggleTodoItem}
+                />
             </TableCell>
             <TableCell style={textStyle} component="th" scope="row">
-                {data.title}
+                <Button
+                    style={{
+                        textTransform: "none",
+                        fontSize: "12px",
+                        fontWeight: "bold",
+                        fontFamily: "Roboto, sans-serif",
+                        color: "black",
+                    }}
+                    onClick={handleOpen}
+                >
+                    {data.title}
+                </Button>
+                <Modal
+                    open={open}
+                    onClose={handleClose}
+                    aria-labelledby="modal-modal-title"
+                    aria-describedby="modal-modal-description"
+                >
+                    <Box sx={style}>
+                        <Typography
+                            id="modal-modal-title"
+                            variant="h6"
+                            component="h2"
+                        >
+                            Edit Item
+                        </Typography>
+                        <InputTodo
+                            makeRefresh={setCheckRefresh}
+                            handleClose={handleClose}
+                            _data={data}
+                        />
+                    </Box>
+                </Modal>
             </TableCell>
             <TableCell
                 style={textStyle}

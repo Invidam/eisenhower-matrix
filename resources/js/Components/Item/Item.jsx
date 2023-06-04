@@ -82,7 +82,6 @@ export default function Item({ data, makeRefresh }) {
                     aria-describedby="modal-modal-description"
                 >
                     <Box sx={style}>
-                        {console.log("INPUT TODO")}
                         <Typography
                             id="modal-modal-title"
                             variant="h6"
