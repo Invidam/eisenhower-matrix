@@ -3,6 +3,9 @@ import { Grid, Card, CardContent, Typography, Box } from "@mui/material";
 import ItemList from "./ItemList";
 
 export default function MatrixItem({ setCheckRefresh, item, title, list }) {
+    //style that line-through if item.is_done == true
+    
+
     return (
         <Box key={item.id} item xs={2} sm={6} md={3} lg={12}>
             <Card className={"matrix-" + title}>

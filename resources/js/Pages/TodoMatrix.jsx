@@ -34,9 +34,7 @@ export default function TodoMatrix({ auth }) {
         const isUrgent =
             new Date(item.deadline * 1000) - new Date() <
             user.important_hour_range * 60 * 60 * 1000;
-        console.log("PRI", item.priority, user.important_priority_range);
         const isImportant = item.priority <= user.important_priority_range;
-        if (item.title === "치과") console.log(item, isUrgent, isImportant);
         if (isUrgent && isImportant) {
             return "Do";
         } else if (isUrgent && !isImportant) {

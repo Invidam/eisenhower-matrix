@@ -31,7 +31,13 @@ export default function MatrixTodo({ setCheckRefresh, data }) {
 
     const textStyle = {
         fontSize: "16px",
-        fontWeight: "500",
+        fontWeight: "700",
+        fontFamily: "Roboto, sans-serif",
+        color: isTimeOver() ? "red" : "inherit",
+    };
+    const textStyle2 = {
+        fontSize: "16px",
+        fontWeight: "700",
         fontFamily: "Roboto, sans-serif",
     };
     const toggleTodoItem = () => {
@@ -64,10 +70,12 @@ export default function MatrixTodo({ setCheckRefresh, data }) {
                 <Button
                     style={{
                         textTransform: "none",
-                        fontSize: "12px",
+                        fontSize: "16px",
+                        fontWeight: "700",
                         fontWeight: "bold",
                         fontFamily: "Roboto, sans-serif",
                         color: "black",
+                        textDecoration: checkStatus ? "line-through" : "none",
                     }}
                     onClick={handleOpen}
                 >
@@ -101,10 +109,12 @@ export default function MatrixTodo({ setCheckRefresh, data }) {
                 component="th"
                 scope="row"
             >
-                {formatTimestamp(data.deadline)}
+                <div className={isTimeOver() ? "blink" : ""}>
+                    {formatTimestamp(data.deadline)}
+                </div>
             </TableCell>
             <TableCell
-                style={textStyle}
+                style={textStyle2}
                 align="left"
                 component="th"
                 scope="row"
@@ -113,6 +123,10 @@ export default function MatrixTodo({ setCheckRefresh, data }) {
             </TableCell>
         </TableRow>
     );
+
+    function isTimeOver() {
+        return new Date(data.deadline * 1000) < Date.now();
+    }
 }
 
 function formatTimestamp(db_time) {

@@ -70,6 +70,7 @@ export default function Item({ data, makeRefresh }) {
                         fontWeight: "bold",
                         fontFamily: "Roboto, sans-serif",
                         color: "black",
+                        textDecoration: checkStatus ? "line-through" : "none",
                     }}
                     onClick={handleOpen}
                 >
@@ -97,14 +98,35 @@ export default function Item({ data, makeRefresh }) {
                     </Box>
                 </Modal>
             </TableCell>
-            <TableCell align="left" component="th" scope="row">
-                {formatTimestamp(data.deadline)}
+            <TableCell
+                align="left"
+                component="th"
+                scope="row"
+                style={{
+                    fontWeight: "700",
+                    color: isTimeOver() ? "red" : "inherit",
+                }}
+            >
+                <div className={isTimeOver() ? "blink" : ""}>
+                    {formatTimestamp(data.deadline)}
+                </div>
             </TableCell>
-            <TableCell align="left" component="th" scope="row">
+            <TableCell
+                align="left"
+                component="th"
+                scope="row"
+                style={{
+                    fontWeight: "700",
+                }}
+            >
                 {data.priority}
             </TableCell>
         </TableRow>
     );
+
+    function isTimeOver() {
+        return new Date(data.deadline * 1000) < Date.now();
+    }
 }
 
 function formatTimestamp(db_time) {

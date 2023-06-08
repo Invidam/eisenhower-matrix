@@ -4,11 +4,17 @@
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
 
-        <title inertia>{{ config('app.name', 'Laravel') }}</title>
+        <title inertia>{{ config('app.name', 'Todo Matrix') }}</title>
 
         <!-- Fonts -->
         <link rel="preconnect" href="https://fonts.bunny.net">
         <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
+        <link rel="icon" href="/favicon.ico" />    
+        <!-- <link rel="icon" href="{{ URL::asset('favicon.ico') }}" type="image/x-icon"/> -->
+
+
+
+        <!-- <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}"> -->
 
         <!-- Scripts -->
         @routes
