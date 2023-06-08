@@ -2,9 +2,8 @@ import * as React from "react";
 import { Grid, Card, CardContent, Typography, Box } from "@mui/material";
 import ItemList from "./ItemList";
 
-export default function MatrixItem({ setCheckRefresh, item, title, list }) {
+export default function MatrixItem({ makeRefresh, item, title, list }) {
     //style that line-through if item.is_done == true
-    
 
     return (
         <Box key={item.id} item xs={2} sm={6} md={3} lg={12}>
@@ -26,7 +25,7 @@ export default function MatrixItem({ setCheckRefresh, item, title, list }) {
                         }}
                     >
                         <ItemList
-                            setCheckRefresh={setCheckRefresh}
+                            makeRefresh={makeRefresh}
                             tableList={list}
                             title={title}
                         />

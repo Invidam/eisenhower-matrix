@@ -10,7 +10,7 @@ import SortingButton from "../Item/SortingButton";
 import Item from "../Item/Item";
 import MatrixTodo from "./MatrixTodo";
 
-export default function ItemList({ setCheckRefresh, tableList, title }) {
+export default function ItemList({ makeRefresh, tableList, title }) {
     const headerStyle = { fontSize: "16px", fontWeight: "bold" };
     return (
         <TableContainer
@@ -56,7 +56,11 @@ export default function ItemList({ setCheckRefresh, tableList, title }) {
 
                 <TableBody className={"matrix-content matrix-content-" + title}>
                     {tableList.map((row) => (
-                        <MatrixTodo setCheckRefresh={setCheckRefresh} data={row} key={row.id} />
+                        <MatrixTodo
+                            makeRefresh={makeRefresh}
+                            data={row}
+                            key={row.id}
+                        />
                     ))}
                 </TableBody>
             </Table>

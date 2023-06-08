@@ -64,15 +64,6 @@ class ItemController extends Controller
         $item->description = $request->description;
 
         $item->save();
-
-
-//        $item->title = $request->
-//        $item->update([
-//            'title' => $request->title,
-//            'deadline' => $timestamp,
-//            'priority' => $request->priority,
-//            'description' => $request->description,
-//        ]);
     }
 
     public function index(Request $request)

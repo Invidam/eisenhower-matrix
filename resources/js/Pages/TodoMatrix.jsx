@@ -156,7 +156,7 @@ export default function TodoMatrix({ auth }) {
                         }}
                     >
                         <MatrixItem
-                            setCheckRefresh={makeRefresh}
+                            makeRefresh={makeRefresh}
                             key={data[0].id}
                             item={data[0]}
                             title={"do"}
@@ -172,7 +172,7 @@ export default function TodoMatrix({ auth }) {
                         }}
                     >
                         <MatrixItem
-                            setCheckRefresh={makeRefresh}
+                            makeRefresh={makeRefresh}
                             key={data[1].id}
                             item={data[1]}
                             title={"schedule"}
@@ -204,7 +204,7 @@ export default function TodoMatrix({ auth }) {
                         }}
                     >
                         <MatrixItem
-                            setCheckRefresh={makeRefresh}
+                            makeRefresh={makeRefresh}
                             key={data[2].id}
                             item={data[2]}
                             title={"delegate"}
@@ -222,7 +222,7 @@ export default function TodoMatrix({ auth }) {
                         }}
                     >
                         <MatrixItem
-                            setCheckRefresh={makeRefresh}
+                            makeRefresh={makeRefresh}
                             key={data[3].id}
                             item={data[3]}
                             title={"delete"}

@@ -22,7 +22,7 @@ const style = {
     p: 4,
 };
 
-export default function MatrixTodo({ setCheckRefresh, data }) {
+export default function MatrixTodo({ makeRefresh, data }) {
     const [open, setOpen] = React.useState(false);
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
@@ -96,7 +96,7 @@ export default function MatrixTodo({ setCheckRefresh, data }) {
                             Edit Item
                         </Typography>
                         <InputTodo
-                            makeRefresh={setCheckRefresh}
+                            makeRefresh={makeRefresh}
                             handleClose={handleClose}
                             _data={data}
                         />
