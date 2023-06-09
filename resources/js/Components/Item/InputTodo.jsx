@@ -11,19 +11,19 @@ import InputError from "../InputError";
 import PrimaryButton from "../PrimaryButton";
 import dayjs from "dayjs";
 
-export default function InputTodo({ makeRefresh, handleClose, _data }) {
+export default function InputTodo({
+    makeRefresh,
+    handleClose,
+    _data,
+    setTableList,
+}) {
     const { data, setData, patch, processing, errors, reset } = useForm(_data);
     const [selectedDate, setSelectedDate] = useState(
         dayjs(new Date(_data.deadline * 1000))
     );
-    console.log("_data:", _data);
-    console.log("data:", data);
-    console.log("selectedDate:", selectedDate);
     const submit = (e) => {
         e.preventDefault();
         // data.deadline = new Date(data.deadline * 1000);
-        console.log("SEND: ", e);
-        console.log("SEND: ", data);
         patch(route("item.edit"));
         if (
             data.title == null ||
@@ -35,7 +35,9 @@ export default function InputTodo({ makeRefresh, handleClose, _data }) {
             //상위에서는 new Date()로 갖고있다가 테이블 넣을 시 getTime / 1000이 되어버림
             //여기선 /1000으로 관리함/
         }
+        console.log("REFRESH");
         makeRefresh();
+        setTableList(_data, data);
         handleClose();
     };
 
@@ -65,10 +67,6 @@ export default function InputTodo({ makeRefresh, handleClose, _data }) {
                         />
                     </Stack>
                     <Stack direction="column">
-                        {console.log(
-                            "DEFAULT IN OUT",
-                            dayjs(new Date(data.deadline * 1000))
-                        )}
                         <DatePick
                             data={data}
                             setData={setData}

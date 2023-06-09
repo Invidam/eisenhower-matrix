@@ -35,6 +35,13 @@ export default function TableList() {
         setSortDirection(newSortDirection);
     };
     const makeRefresh = () => setCheckRefresh(checkRefresh + 1);
+
+    const tableRefresh = (befData, data) => {
+        const index = tableList.indexOf(befData);
+        tableList[index] = data;
+        setTableList(tableList);
+    };
+
     const toggleDeadline = () => {
         setPrioritySortDirection("");
         toggleSortBtn(
@@ -64,10 +71,8 @@ export default function TableList() {
                       sort_type: "deadline",
                       sort_direction: deadlineSortDirection,
                   };
-        console.log("BEF", params);
         ApiFetch.get("/items", { params }).then((res) => {
             setTableList(res.data);
-            console.log("AFT", res.data);
         });
     }, [deadlineSortDirection, prioritySortDirection, checkRefresh]);
 
@@ -82,8 +87,8 @@ export default function TableList() {
         e.preventDefault();
         post(route("item.create"));
         if (
-            data.title == null ||
-            data.deadline == null ||
+            data.title == "" ||
+            data.deadline == "" ||
             data.priority == null ||
             data.description == null
         ) {
@@ -134,6 +139,7 @@ export default function TableList() {
                                 data={row}
                                 key={row.id}
                                 makeRefresh={makeRefresh}
+                                setTableList={tableRefresh}
                             />
                         ))}
                     </TableBody>

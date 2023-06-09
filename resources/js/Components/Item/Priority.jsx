@@ -13,7 +13,6 @@ export default function Priority({ data, setData }) {
                 value={data.priority || ""}
                 label="priority"
                 onChange={(e) => {
-                    console.log(e);
                     setData("priority", e.target.value);
                 }}
             >

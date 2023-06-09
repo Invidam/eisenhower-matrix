@@ -20,13 +20,8 @@ export default function DatePick({
                     // defaultValue={defaultValue}
                     value={selectedDate}
                     onChange={(date) => {
-                        console.log("selectedDate", selectedDate);
-                        console.log("date", date);
-                        console.log("TO DEADLINE: ", new Date(date));
-                        console.log(data);
                         setData("deadline", new Date(date));
                         setSelectedDate(date);
-                        console.log("selectedDate", selectedDate);
                     }}
                 />
             </LocalizationProvider>

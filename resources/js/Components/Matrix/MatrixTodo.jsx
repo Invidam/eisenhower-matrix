@@ -41,8 +41,6 @@ export default function MatrixTodo({ makeRefresh, data }) {
         fontFamily: "Roboto, sans-serif",
     };
     const toggleTodoItem = () => {
-        console.log(checkStatus);
-
         setCheckStatus(!checkStatus);
         ApiFetch.patch(`/items/${data.id}/done`);
     };

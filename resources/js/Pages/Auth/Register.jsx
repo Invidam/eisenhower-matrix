@@ -21,11 +21,9 @@ export default function Register() {
     }, []);
 
     const submit = (e) => {
-        console.log(errors);
         e.preventDefault();
 
         post(route("register"));
-        console.log(errors);
     };
 
     return (

@@ -23,22 +23,19 @@ const style = {
     p: 4,
 };
 
-export default function Item({ data, makeRefresh }) {
+export default function Item({ data, makeRefresh, setTableList }) {
     const [open, setOpen] = React.useState(false);
     const handleOpen = () => {
-        console.log("opening modal");
         setOpen(true);
     };
     const handleClose = () => {
-        console.log("closing modal");
         setOpen(false);
     };
 
+    const _makeRefresh = () => {};
     const [checkStatus, setCheckStatus] = useState(false);
 
     const toggleTodoItem = () => {
-        console.log(checkStatus);
-
         setCheckStatus(!checkStatus);
         ApiFetch.patch(`/items/${data.id}/done`);
     };
@@ -91,7 +88,8 @@ export default function Item({ data, makeRefresh }) {
                             Edit Item
                         </Typography>
                         <InputTodo
-                            makeRefresh={makeRefresh}
+                            makeRefresh={_makeRefresh}
+                            setTableList={setTableList}
                             handleClose={handleClose}
                             _data={data}
                         />

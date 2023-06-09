@@ -13,18 +13,16 @@ export default function UpdateSettingInformationForm({
     className = "",
 }) {
     const user = usePage().props.auth.user;
-    // console.log(user);
+    
     const { data, setData, patch, errors, processing, recentlySuccessful } =
         useForm({
             id: user.id,
             important_priority_range: user.important_priority_range,
             important_hour_range: user.important_hour_range,
         });
-    console.log(data);
 
     const submit = (e) => {
         e.preventDefault();
-        console.log(data);
         patch(route("setting.update"));
     };
 

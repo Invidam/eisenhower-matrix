@@ -67,11 +67,6 @@ export default function TodoMatrix({ auth }) {
                     break;
             }
         });
-
-        console.log("doList: ", doList);
-        console.log("scheduleList: ", scheduleList);
-        console.log("delegateList: ", delegateList);
-        console.log("deleteList: ", deleteList);
     };
 
     const [checkRefresh, setCheckRefresh] = useState(0);

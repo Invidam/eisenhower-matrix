@@ -13,7 +13,6 @@ export default function EndPriority({ data, setData }) {
                 value={data.important_priority_range || ""}
                 label="to"
                 onChange={(e) => {
-                    console.log(e);
                     setData("important_priority_range", e.target.value);
                 }}
             >

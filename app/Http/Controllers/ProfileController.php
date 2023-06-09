@@ -53,7 +53,10 @@ class ProfileController extends Controller
 
         Auth::logout();
 
+        $user->items()->delete();
         $user->delete();
+        //delete forign key with item model
+        $user->items()->delete();
 
         $request->session()->invalidate();
         $request->session()->regenerateToken();
